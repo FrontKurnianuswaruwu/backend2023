@@ -7,9 +7,17 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function getAll()
+    public function getAll(Request $request)
     {
-        $books = Book::query()->with('publisher')->get();
+        $books = Book::query()
+            ->when($request->search,function ($query) use ($request){
+                $searchTerm = '%'.$request->search.'%';
+                $query->where('code','like',$searchTerm)
+                    ->orWhere('title','like',$searchTerm)
+                    ->orWhere('published_year','like',$searchTerm)
+                    ->orWhere('city','like',$searchTerm);
+            })
+            ->get();
         return response()->json([
             'data' => $books
         ], 200);

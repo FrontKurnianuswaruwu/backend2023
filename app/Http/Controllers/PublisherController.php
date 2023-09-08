@@ -9,7 +9,7 @@ class PublisherController extends Controller
 {
     public function getAll()
     {
-        #all() fungsi untuk ambil semua data
+
         $publishers = Publisher::all();
         return response()->json([
             'data' => $publishers
@@ -18,7 +18,7 @@ class PublisherController extends Controller
 
     public function getById($id)
     {
-//        $publisher = Publisher::where('id',$id)->first();
+
         $publisher = Publisher::find($id);
         if ($publisher === null) {
             return response()->json([], 404);
@@ -71,5 +71,4 @@ class PublisherController extends Controller
             'data' => $publisher
         ], 200);
     }
-
 }
