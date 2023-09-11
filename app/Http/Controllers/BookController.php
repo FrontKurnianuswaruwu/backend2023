@@ -58,4 +58,29 @@ class BookController extends Controller
             'data' => $book
         ], 201);
     }
+    public function update(Request $request)
+    {
+        $book = Book::find($request->id);
+        if ($book === null) {
+            return response()->json([], 404);
+        }
+        $book->code = $request->code;
+        $book->title = $request->title;
+        $book->published_year = $request->published_year;
+        $book->city = $request->city;
+        $book->id_publisher = $request->id_publisher;
+        $book->save();
+        return response()->json([
+            'data' => $book
+        ], 200);
+    }
+    public function delete(Request $request)
+    {
+        $book = Book::find($request->id);
+        if ($book === null) {
+            return response()->json([], 404);
+        }
+        $book->delete();
+        return response()->json([], 200);
+    }
 }

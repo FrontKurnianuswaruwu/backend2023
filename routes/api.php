@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/user/login', [AuthController::class, 'verify']);
 
-Route::group(['prefix' => 'publishers'], function () {
+Route::group(['prefix' => 'publishers','middleware'=>'pbe.auth'], function () {
     Route::get('/', [PublisherController::class, 'getAll']);
     Route::get('/{id}', [PublisherController::class, 'getById']);
     Route::get('/{id}/books', [PublisherController::class, 'getBooksByIdPublisher']);
@@ -16,7 +16,7 @@ Route::group(['prefix' => 'publishers'], function () {
     Route::delete('/', [PublisherController::class, 'delete']);
 });
 
-Route::group(['prefix' => 'books'], function () {
+Route::group(['prefix' => 'books','middleware'=>'pbe.auth'], function () {
     Route::get('/', [BookController::class, 'getAll']);
     Route::get('/{id}', [BookController::class, 'getById']);
     Route::post('/', [BookController::class, 'create']);
