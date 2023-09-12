@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use App\Models\UserToken;
 use Carbon\Carbon;
@@ -28,7 +29,7 @@ class AuthController extends Controller
         }
 
         $token = Uuid::uuid6()->toString();
-
+        #simpan ke user token
         $userToken = new UserToken();
         $userToken->token = $token;
         $userToken->expired = Carbon::now()->addDays(1)->format('Y-m-d H:i:s');

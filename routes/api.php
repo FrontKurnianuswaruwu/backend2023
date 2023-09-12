@@ -11,15 +11,25 @@ Route::group(['prefix' => 'publishers','middleware'=>'pbe.auth'], function () {
     Route::get('/', [PublisherController::class, 'getAll']);
     Route::get('/{id}', [PublisherController::class, 'getById']);
     Route::get('/{id}/books', [PublisherController::class, 'getBooksByIdPublisher']);
-    Route::post('/', [PublisherController::class, 'create']);
-    Route::put('/', [PublisherController::class, 'update']);
-    Route::delete('/', [PublisherController::class, 'delete']);
+
+    Route::post('/', [PublisherController::class, 'create'])->middleware('pbe.admin');
+    Route::put('/', [PublisherController::class, 'update'])->middleware('pbe.admin');
+
+    Route::delete('/', [PublisherController::class, 'delete'])->middleware('pbe.superadmin');
 });
 
 Route::group(['prefix' => 'books','middleware'=>'pbe.auth'], function () {
     Route::get('/', [BookController::class, 'getAll']);
     Route::get('/{id}', [BookController::class, 'getById']);
-    Route::post('/', [BookController::class, 'create']);
-    Route::put('/', [BookController::class, 'update']);
-    Route::delete('/', [BookController::class, 'delete']);
+
+    Route::group(['middleware' => 'pbe.admin'], function ()
+    {
+        Route::post('/', [BookController::class, 'create']);
+        Route::put('/', [BookController::class, 'update']);
+    });
+    Route::group(['middleware' => 'pbe.superadmin'], function ()
+    {
+        Route::delete('/', [BookController::class, 'delete']);
+    });
+
 });
